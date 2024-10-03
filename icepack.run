@@ -1,0 +1,32 @@
+#!/bin/csh -f 
+
+set ICE_LOGDIR = log
+set ICE_CASENAME = icepack_demo
+
+set  stamp   = `date '+%y%m%d-%H%M%S'`
+set ICE_RUNLOG_FILE = "icepack.runlog.${stamp}"
+
+echo " "
+echo "ICEPACK log file is ${ICE_RUNLOG_FILE}"
+echo "ICEPACK run started : `date`"
+
+./icepack >&! $ICE_RUNLOG_FILE
+echo "ICEPACK run finished: `date`"
+echo " "
+
+#--------------------------------------------
+
+if !(-d ${ICE_LOGDIR}) mkdir -p ${ICE_LOGDIR}
+cp -p ${ICE_RUNLOG_FILE} ${ICE_LOGDIR}
+foreach file (ice_diag.*)
+  cp -p ${file} ${ICE_LOGDIR}/${file}.${stamp}
+end
+
+grep ' ICEPACK COMPLETED SUCCESSFULLY' ${ICE_RUNLOG_FILE}
+if ( $status != 0 ) then
+  echo "ICEPACK run did not complete - see ${ICE_LOGDIR}/${ICE_RUNLOG_FILE}"
+  exit -1
+endif
+
+echo "done ${0}"
+
