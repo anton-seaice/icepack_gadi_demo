@@ -123,7 +123,7 @@
     trestore        = 90
     precip_units    = 'mks'
     default_season  = 'spring'
-    atm_data_type   = 'cfs'
+    atm_data_type   = 'CFS'
     ocn_data_type   = 'default'
     bgc_data_type   = 'default'
     lateral_flux_type   = 'uniform_ice'
